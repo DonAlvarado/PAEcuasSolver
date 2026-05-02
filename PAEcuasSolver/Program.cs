@@ -1,55 +1,50 @@
 ﻿using PAEcuasSolver.Services;
 using PAEcuasSolver.Utils;
+using PAEcuasSolver.Utils.Formatters;
 using PAEcuasSolver.Models.Results;
 
-// Inicialización
+// Inicialización de componentes principales
 var solver = new SolverService();
 var menu = new PAEcuasSolver.Utils.Menu();
+var formatter = new UnifiedResultFormatter();
+var plotService = new PlotService();
 
-// Obtener input del usuario
+// ================= INPUT =================
 var input = menu.Show();
 
-// Resolver problema
+// ================= SOLVER =================
 var result = solver.Resolver(input);
 
-// Mostrar resultado textual
-Console.WriteLine("Resultado:");
-Console.WriteLine(result.Message);
+// ================= OUTPUT =================
+Console.WriteLine("Resultado:\n");
 
-// VALIDACIÓN GENERAL
+// Si no hay datos → error controlado
 if (result.Data == null)
 {
-    Console.WriteLine("No hay datos para graficar.");
+    Console.WriteLine("No se pudo obtener resultado del sistema.");
     return;
 }
 
-// VALIDAR LISTAS GENÉRICAMENTE (NO MVA ONLY)
-if (result.Data is IResultData dataWithPlot)
+// Mostrar resultado formateado (MAS, MVA, MVF, etc.)
+Console.WriteLine(formatter.Format(result.Data));
+
+// ================= PLOT =================
+
+// Validación de datos para graficar
+if (result.Data.Time == null || result.Data.Values == null)
 {
-    var plotService = new PlotService();
-
-    // MAS o MVA ya deben tener Time/Values
-    var t = dataWithPlot.Time;
-    var x = dataWithPlot.Values;
-
-    if (t == null || x == null)
-    {
-        Console.WriteLine("No hay datos para graficar.");
-        return;
-    }
-
-    if (t.Count != x.Count)
-    {
-        Console.WriteLine("Datos inconsistentes para graficar.");
-        return;
-    }
-
-    Console.WriteLine($"Datos t: {t.Count}");
-    Console.WriteLine($"Datos x: {x.Count}");
-
-    plotService.PlotAnimated(dataWithPlot);
+    Console.WriteLine("\nNo hay datos para graficar.");
+    return;
 }
-else
+
+if (result.Data.Time.Count != result.Data.Values.Count)
 {
-    Console.WriteLine("Tipo de resultado no soportado para gráfica aún.");
+    Console.WriteLine("\nDatos inconsistentes para graficar.");
+    return;
 }
+
+Console.WriteLine($"\nDatos t: {result.Data.Time.Count}");
+Console.WriteLine($"Datos x: {result.Data.Values.Count}");
+
+// Graficar (unificado)
+plotService.PlotAnimated(result.Data);
