@@ -14,7 +14,7 @@ namespace PAEcuasSolver.Utils
 
             foreach (var rawLine in lines)
             {
-                var line = rawLine.Trim(); // 🔥 CLAVE
+                var line = rawLine.Trim();
 
                 if (line == "JSON_START")
                 {
@@ -34,7 +34,14 @@ namespace PAEcuasSolver.Utils
                 }
                 else
                 {
-                    humanBuilder.AppendLine(rawLine); // conserva formato original
+                    if (line.StartsWith("ans") ||
+                        line.StartsWith("struct") ||
+                        line.Contains("with fields"))
+                    {
+                        continue;
+                    }
+
+                    humanBuilder.AppendLine(rawLine);
                 }
             }
 

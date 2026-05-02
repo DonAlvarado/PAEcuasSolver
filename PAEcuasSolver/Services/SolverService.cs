@@ -42,7 +42,7 @@ namespace PAEcuasSolver.Services
 
                 var mapper = ResultMapperFactory.GetMapper(input.Type);
 
-                data = mapper.Map(root); // 🔥 AQUÍ YA ES JsonElement
+                data = mapper.Map(root);
             }
 
             return new Result
@@ -57,6 +57,8 @@ namespace PAEcuasSolver.Services
             return type switch
             {
                 "MAS" => "mas",
+                "MVA" => "mva",
+                
                 _ => throw new NotImplementedException($"No hay script para {type}")
             };
         }

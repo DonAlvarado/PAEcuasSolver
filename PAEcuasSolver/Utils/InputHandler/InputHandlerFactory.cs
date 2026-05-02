@@ -9,6 +9,7 @@ namespace PAEcuasSolver.Utils.InputHandler
             return option switch
             {
                 "1" => new MASInputHandler(),
+                "2" => new MVAInputHandler(),
 
                 // futuros:
                 // "2" => new MVAInputHandler(),

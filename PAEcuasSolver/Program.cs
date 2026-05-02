@@ -16,32 +16,38 @@ var result = solver.Resolver(input);
 Console.WriteLine("Resultado:");
 Console.WriteLine(result.Message);
 
-// 🔥 VALIDAR SI HAY DATA
+// VALIDACIÓN GENERAL
 if (result.Data == null)
 {
     Console.WriteLine("No hay datos para graficar.");
     return;
 }
 
-// 🔥 INTENTAR CAST A MAS (por ahora solo tienes ese caso)
-if (result.Data is MASResultData masData)
+// VALIDAR LISTAS GENÉRICAMENTE (NO MVA ONLY)
+if (result.Data is IResultData dataWithPlot)
 {
-    if (masData.Time == null || masData.Values == null)
+    var plotService = new PlotService();
+
+    // MAS o MVA ya deben tener Time/Values
+    var t = dataWithPlot.Time;
+    var x = dataWithPlot.Values;
+
+    if (t == null || x == null)
     {
         Console.WriteLine("No hay datos para graficar.");
         return;
     }
 
-    Console.WriteLine($"Datos t: {masData.Time.Count}");
-    Console.WriteLine($"Datos x: {masData.Values.Count}");
+    if (t.Count != x.Count)
+    {
+        Console.WriteLine("Datos inconsistentes para graficar.");
+        return;
+    }
 
-    // 🔥 GRAFICAR
-    var plotService = new PlotService();
+    Console.WriteLine($"Datos t: {t.Count}");
+    Console.WriteLine($"Datos x: {x.Count}");
 
-    plotService.PlotAnimated(
-        masData.Time.ToArray(),
-        masData.Values.ToArray()
-    );
+    plotService.PlotAnimated(dataWithPlot);
 }
 else
 {

@@ -1,18 +1,19 @@
 ﻿using ScottPlot;
 using ScottPlot.WinForms;
 using System.Windows.Forms;
+using PAEcuasSolver.Models.Results;
 
 namespace PAEcuasSolver.Services
 {
     public class PlotService
     {
-        public void PlotAnimated(double[] t, double[] x)
+        public void PlotAnimated(IResultData result)
         {
             Form form = new Form
             {
                 Width = 800,
                 Height = 600,
-                Text = "Gráfica MAS"
+                Text = "Gráfica del Sistema"
             };
 
             FormsPlot formsPlot = new FormsPlot
@@ -24,7 +25,30 @@ namespace PAEcuasSolver.Services
 
             var plt = formsPlot.Plot;
 
+            double[] t = null;
+            double[] x = null;
+
+            // ================= MAS =================
+            if (result is MASResultData mas)
+            {
+                t = mas.Time.ToArray();
+                x = mas.Values.ToArray();
+            }
+            // ================= MVA =================
+            else if (result is MVAResultData mva)
+            {
+                t = mva.Time.ToArray();
+                x = mva.Values.ToArray();
+            }
+            else
+            {
+                MessageBox.Show("Tipo de resultado no soportado para gráfica");
+                return;
+            }
+
+            // Línea base
             plt.Add.Scatter(t, x);
+
             var marker = plt.Add.Marker(t[0], x[0]);
 
             int i = 0;
@@ -51,8 +75,7 @@ namespace PAEcuasSolver.Services
 
             form.Shown += (s, e) => timer.Start();
 
-            // 👇 CLAVE: esto mantiene viva la ventana
-            System.Windows.Forms.Application.Run(form);
+            Application.Run(form);
         }
     }
 }

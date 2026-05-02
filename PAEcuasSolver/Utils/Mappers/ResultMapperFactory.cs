@@ -6,10 +6,8 @@
         {
             return type switch
             {
+                "MVA" => new MVAResultMapper(),
                 "MAS" => new MASResultMapper(),
-
-                // futuros:
-                // "MVA" => new MVAResultMapper(),
 
                 _ => throw new NotImplementedException("No hay mapper para ese tipo")
             };

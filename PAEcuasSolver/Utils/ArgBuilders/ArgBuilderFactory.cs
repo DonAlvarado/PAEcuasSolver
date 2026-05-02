@@ -8,10 +8,8 @@ namespace PAEcuasSolver.Utils.ArgBuilders
         {
             return type switch
             {
+                "MVA" => new MVAArgBuilder(),
                 "MAS" => new MASArgBuilder(),
-
-                // después:
-                // "MVA" => new MVAArgBuilder(),
                 // "RLC_Q" => new RLCQArgBuilder(),
 
                 _ => throw new NotImplementedException($"No hay ArgBuilder para {type}")
