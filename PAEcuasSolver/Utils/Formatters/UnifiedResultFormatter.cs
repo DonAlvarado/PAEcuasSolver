@@ -13,6 +13,8 @@ namespace PAEcuasSolver.Utils.Formatters
                 MASResultData mas => FormatMAS(mas),
                 MVAResultData mva => FormatMVA(mva),
                 MVFResultData mvf => FormatMVF(mvf),
+                RLCQResultData rlc => FormatRLCQ(rlc),
+                RLCIResultData rlc => FormatRLCI(rlc),
 
                 _ => "Tipo de resultado no soportado."
             };
@@ -99,6 +101,46 @@ namespace PAEcuasSolver.Utils.Formatters
             sb.AppendLine($"phi = {mvf.Phase:F4}\n");
 
             sb.AppendLine($"{mvf.Equation}");
+
+            return sb.ToString();
+        }
+
+        // ================= RLCQ =================
+        private string FormatRLCQ(RLCQResultData rlc)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("=== Circuito RLC (Carga q) ===\n");
+
+            sb.AppendLine($"lambda = {rlc.Lambda:F4}");
+            sb.AppendLine($"omega  = {rlc.Omega:F4}");
+            sb.AppendLine($"E0     = {rlc.E0:F4}");
+            sb.AppendLine($"w      = {rlc.W:F4}\n");
+
+            sb.AppendLine($"A   = {rlc.Amplitude:F4}");
+            sb.AppendLine($"phi = {rlc.Phase:F4}\n");
+
+            sb.AppendLine($"{rlc.Equation}");
+
+            return sb.ToString();
+        }
+
+        // ================= RLCI =================
+        private string FormatRLCI(RLCIResultData rlc)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("=== Circuito RLC (Corriente i) ===\n");
+
+            sb.AppendLine($"lambda = {rlc.Lambda:F4}");
+            sb.AppendLine($"omega  = {rlc.Omega:F4}");
+            sb.AppendLine($"E0     = {rlc.E0:F4}");
+            sb.AppendLine($"w      = {rlc.W:F4}\n");
+
+            sb.AppendLine($"A   = {rlc.Amplitude:F4}");
+            sb.AppendLine($"phi = {rlc.Phase:F4}\n");
+
+            sb.AppendLine($"{rlc.Equation}");
 
             return sb.ToString();
         }

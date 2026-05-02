@@ -11,9 +11,8 @@ namespace PAEcuasSolver.Utils.InputHandler
                 "1" => new MASInputHandler(),
                 "2" => new MVAInputHandler(),
                 "3" => new MVFInputHandler(),
-                // futuros:
-                // "2" => new MVAInputHandler(),
-                // "4" => new RLCQInputHandler(),
+                "4" => new RLCQInputHandler(),
+                "5" => new RLCIInputHandler(),
 
                 _ => throw new NotImplementedException("Opción no válida")
             };

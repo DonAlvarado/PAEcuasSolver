@@ -26,6 +26,8 @@ namespace PAEcuasSolver.Services
 
 
             /** 
+             * 
+                                            USAR ESTO EN CASO DE BUG DE LO QUE SUELTA MATLAB:
                                             Console.WriteLine("=== RAW OUTPUT ===");
                                             Console.WriteLine(rawOutput);
                                             Console.WriteLine("=== JSON EXTRAIDO ===");
@@ -59,7 +61,9 @@ namespace PAEcuasSolver.Services
                 "MAS" => "mas",
                 "MVA" => "mva",
                 "MVF" => "mvf",
-                
+                "RLC_Q" => "rlc_q",
+                "RLC_I" => "rlc_i",
+
                 _ => throw new NotImplementedException($"No hay script para {type}")
             };
         }
