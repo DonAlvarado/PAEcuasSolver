@@ -9,6 +9,16 @@ namespace PAEcuasSolver.Services
     {
         public void PlotAnimated(IResultData result)
         {
+            // Validación básica
+            if (result.Time == null || result.Values == null)
+            {
+                MessageBox.Show("No hay datos para graficar");
+                return;
+            }
+
+            double[] t = result.Time.ToArray();
+            double[] x = result.Values.ToArray();
+
             Form form = new Form
             {
                 Width = 800,
@@ -25,30 +35,7 @@ namespace PAEcuasSolver.Services
 
             var plt = formsPlot.Plot;
 
-            double[] t = null;
-            double[] x = null;
-
-            // ================= MAS =================
-            if (result is MASResultData mas)
-            {
-                t = mas.Time.ToArray();
-                x = mas.Values.ToArray();
-            }
-            // ================= MVA =================
-            else if (result is MVAResultData mva)
-            {
-                t = mva.Time.ToArray();
-                x = mva.Values.ToArray();
-            }
-            else
-            {
-                MessageBox.Show("Tipo de resultado no soportado para gráfica");
-                return;
-            }
-
-            // Línea base
             plt.Add.Scatter(t, x);
-
             var marker = plt.Add.Marker(t[0], x[0]);
 
             int i = 0;

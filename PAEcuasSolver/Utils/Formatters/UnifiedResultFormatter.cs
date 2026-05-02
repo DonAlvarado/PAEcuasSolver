@@ -12,6 +12,7 @@ namespace PAEcuasSolver.Utils.Formatters
             {
                 MASResultData mas => FormatMAS(mas),
                 MVAResultData mva => FormatMVA(mva),
+                MVFResultData mvf => FormatMVF(mvf),
 
                 _ => "Tipo de resultado no soportado."
             };
@@ -81,6 +82,25 @@ namespace PAEcuasSolver.Utils.Formatters
             }
 
             return "Ecuación no disponible";
+        }
+
+        private string FormatMVF(MVFResultData mvf)
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine("=== Movimiento Vibratorio Forzado ===\n");
+
+            sb.AppendLine($"lambda = {mvf.Lambda:F4}");
+            sb.AppendLine($"omega  = {mvf.Omega:F4}");
+            sb.AppendLine($"F0     = {mvf.F0:F4}");
+            sb.AppendLine($"wf     = {mvf.OmegaF:F4}\n");
+
+            sb.AppendLine($"A   = {mvf.Amplitude:F4}");
+            sb.AppendLine($"phi = {mvf.Phase:F4}\n");
+
+            sb.AppendLine($"{mvf.Equation}");
+
+            return sb.ToString();
         }
     }
 }

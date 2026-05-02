@@ -8,6 +8,7 @@
             {
                 "MVA" => new MVAResultMapper(),
                 "MAS" => new MASResultMapper(),
+                "MVF" => new MVFResultMapper(),
 
                 _ => throw new NotImplementedException("No hay mapper para ese tipo")
             };

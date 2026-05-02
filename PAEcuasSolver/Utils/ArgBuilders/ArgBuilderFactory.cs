@@ -10,6 +10,7 @@ namespace PAEcuasSolver.Utils.ArgBuilders
             {
                 "MVA" => new MVAArgBuilder(),
                 "MAS" => new MASArgBuilder(),
+                "MVF" => new MVFArgBuilder(),
                 // "RLC_Q" => new RLCQArgBuilder(),
 
                 _ => throw new NotImplementedException($"No hay ArgBuilder para {type}")

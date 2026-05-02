@@ -58,6 +58,7 @@ namespace PAEcuasSolver.Services
             {
                 "MAS" => "mas",
                 "MVA" => "mva",
+                "MVF" => "mvf",
                 
                 _ => throw new NotImplementedException($"No hay script para {type}")
             };
