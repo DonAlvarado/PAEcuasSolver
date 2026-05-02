@@ -1,46 +1,49 @@
-﻿using PAEcuasSolver.Controllers;
-using PAEcuasSolver.Models;
+﻿using PAEcuasSolver.Services;
 using PAEcuasSolver.Utils;
+using PAEcuasSolver.Models.Results;
 
-var controller = new SolverController();
+// Inicialización
+var solver = new SolverService();
+var menu = new PAEcuasSolver.Utils.Menu();
 
-Console.WriteLine("Seleccione tipo de problema:");
-Console.WriteLine("1. MAS");
-Console.WriteLine("2. MVA");
-Console.WriteLine("3. MVF");
-Console.WriteLine("4. Circuito (q)");
-Console.WriteLine("5. Circuito (i)");
+// Obtener input del usuario
+var input = menu.Show();
 
-string opcion = Console.ReadLine();
+// Resolver problema
+var result = solver.Resolver(input);
 
-var Input = new ProblemInput
+// Mostrar resultado textual
+Console.WriteLine("Resultado:");
+Console.WriteLine(result.Message);
+
+// 🔥 VALIDAR SI HAY DATA
+if (result.Data == null)
 {
-    Parameters = new Dictionary<string, double>()
-};
-
-switch (opcion)
-{
-    case "1":
-        Input.Type = "MAS";
-        Input.Parameters["m"] = InputHelper.LeerDouble("Masa: ");
-        Input.Parameters["k"] = InputHelper.LeerDouble("Constante k: ");
-        break;
-
-    case "2":
-        Input.Type = "MVA";
-        break;
-
-    case "3":
-        Input.Type = "MVF";
-        break;
-
-    case "4":
-        Input.Type = "RLC_Q";
-        break;
-
-    case "5":
-        Input.Type = "RLC_I";
-        break;
+    Console.WriteLine("No hay datos para graficar.");
+    return;
 }
 
-controller.Ejecutar(Input);
+// 🔥 INTENTAR CAST A MAS (por ahora solo tienes ese caso)
+if (result.Data is MASResultData masData)
+{
+    if (masData.Time == null || masData.Values == null)
+    {
+        Console.WriteLine("No hay datos para graficar.");
+        return;
+    }
+
+    Console.WriteLine($"Datos t: {masData.Time.Count}");
+    Console.WriteLine($"Datos x: {masData.Values.Count}");
+
+    // 🔥 GRAFICAR
+    var plotService = new PlotService();
+
+    plotService.PlotAnimated(
+        masData.Time.ToArray(),
+        masData.Values.ToArray()
+    );
+}
+else
+{
+    Console.WriteLine("Tipo de resultado no soportado para gráfica aún.");
+}

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using PAEcuasSolver.Models.Results;
 
 namespace PAEcuasSolver.Models
 {
     public class Result
     {
-        public string Mensaje { get; set; }
-        public List<double> Valores { get; set; }
+        public string Message { get; set; }
+
+        // 👇 aquí vive el resultado específico
+        public IResultData Data { get; set; }
     }
 }

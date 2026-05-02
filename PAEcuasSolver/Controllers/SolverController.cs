@@ -16,7 +16,7 @@ namespace PAEcuasSolver.Controllers
             var result = solverService.Resolver(input);
 
             Console.WriteLine("Resultado:");
-            Console.WriteLine(result.Mensaje);
+            Console.WriteLine(result.Message);
         }
     }
 }

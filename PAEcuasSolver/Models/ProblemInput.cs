@@ -7,6 +7,11 @@ namespace PAEcuasSolver.Models
     public class ProblemInput
     {
         public string Type { get; set; }
+
         public Dictionary<string, double> Parameters { get; set; }
+
+        // Para condiciones iniciales
+        public double InitialPosition { get; set; }
+        public double InitialVelocity { get; set; }
     }
 }

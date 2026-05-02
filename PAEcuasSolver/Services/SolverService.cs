@@ -1,43 +1,64 @@
 ﻿using PAEcuasSolver.Models;
-using PAEcuasSolver.Services;
+using PAEcuasSolver.Models.Results;
 using PAEcuasSolver.Utils;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using PAEcuasSolver.Utils.ArgBuilders;
+using PAEcuasSolver.Utils.Mappers;
+using System.Text.Json;
 
 namespace PAEcuasSolver.Services
 {
     public class SolverService
     {
-        private MatlabService matlabService = new MatlabService();
+        private readonly MatlabService matlabService = new();
+        private readonly MatlabOutputParser parser = new();
 
-        public Result Resolver(ProblemInput Input)
+        public Result Resolver(ProblemInput input)
         {
-            switch (Input.Type)
+            var argBuilder = ArgBuilderFactory.GetBuilder(input.Type);
+
+            string args = argBuilder.BuildArgs(input);
+
+            string script = GetScriptName(input.Type);
+
+            string rawOutput = matlabService.Execute(script, args);
+
+            var (humanText, json) = parser.Parse(rawOutput);
+
+
+            /** 
+                                            Console.WriteLine("=== RAW OUTPUT ===");
+                                            Console.WriteLine(rawOutput);
+                                            Console.WriteLine("=== JSON EXTRAIDO ===");
+                                            Console.WriteLine(json);
+            **/
+
+
+            IResultData? data = null;
+
+            if (!string.IsNullOrWhiteSpace(json))
             {
-                case "MAS":
-                    return matlabService.Ejecutar("mas.m", Input.Parameters);
+                using var doc = JsonDocument.Parse(json);
+                var root = doc.RootElement;
 
-                case "MVA":
-                    return matlabService.Ejecutar("mva.m", Input.Parameters);
+                var mapper = ResultMapperFactory.GetMapper(input.Type);
 
-                case "MVF":
-                    return matlabService.Ejecutar("mvf.m", Input.Parameters);
-
-                case "RLC_Q":
-                    return matlabService.Ejecutar("circuito_q.m", Input.Parameters);
-
-                case "RLC_I":
-                    return matlabService.Ejecutar("circuito_i.m", Input.Parameters);
-
-                default:
-                    return new Result { Mensaje = "Tipo no soportado" };
+                data = mapper.Map(root); // 🔥 AQUÍ YA ES JsonElement
             }
+
+            return new Result
+            {
+                Message = humanText,
+                Data = data
+            };
         }
 
-        internal object Result(ProblemInput input)
+        private string GetScriptName(string type)
         {
-            throw new NotImplementedException();
+            return type switch
+            {
+                "MAS" => "mas",
+                _ => throw new NotImplementedException($"No hay script para {type}")
+            };
         }
     }
 }

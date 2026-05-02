@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
 
 namespace PAEcuasSolver.Utils
 {
@@ -8,8 +7,18 @@ namespace PAEcuasSolver.Utils
     {
         public static double LeerDouble(string msg)
         {
-            Console.Write(msg);
-            return double.Parse(Console.ReadLine());
+            double valor;
+
+            while (true)
+            {
+                Console.Write(msg);
+                var input = Console.ReadLine();
+
+                if (double.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out valor))
+                    return valor;
+
+                Console.WriteLine("Entrada inválida.");
+            }
         }
     }
 }
