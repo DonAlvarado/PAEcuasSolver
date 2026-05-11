@@ -1,21 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using PAEcuasSolver.Models.Results;
 
-namespace PAEcuasSolver.Models.Results
+public class MVFResultData : IResultData
 {
-    public class MVFResultData : IResultData
-    {
-        public double Lambda { get; set; }
-        public double Omega { get; set; }
+    public double Lambda { get; set; }
+    public double Omega0 { get; set; }
+    public double OmegaF { get; set; }
 
-        public double F0 { get; set; }
-        public double OmegaF { get; set; }
+    public double F0 { get; set; }
 
-        public double Amplitude { get; set; }
-        public double Phase { get; set; }
+    public double A { get; set; }
+    public double B { get; set; }
 
-        public string Equation { get; set; }
+    public double C1 { get; set; }
+    public double C2 { get; set; }
 
-        public List<double> Time { get; set; }
-        public List<double> Values { get; set; }
-    }
+    public string Equation { get; set; }
+
+    public List<double> Time { get; set; }
+    public List<double> Values { get; set; }
 }

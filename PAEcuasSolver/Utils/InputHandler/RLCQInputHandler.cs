@@ -20,11 +20,11 @@ namespace PAEcuasSolver.Utils.InputHandler
             input.Parameters["R"] = InputHelper.LeerDouble("Resistencia (R): ");
             input.Parameters["C"] = InputHelper.LeerDouble("Capacitancia (C): ");
 
-            input.Parameters["E0"] = InputHelper.LeerDouble("Voltaje (E0): ");
-            input.Parameters["w"] = InputHelper.LeerDouble("Frecuencia (w): ");
+            Console.Write("Voltaje E(t): ");
+            input.FunctionExpression = Console.ReadLine();
 
             input.InitialPosition = InputHelper.LeerDouble("q(0): ");
-            input.InitialVelocity = InputHelper.LeerDouble("q'(0): ");
+            input.InitialVelocity = InputHelper.LeerDouble("i(0): ");
 
             return input;
         }

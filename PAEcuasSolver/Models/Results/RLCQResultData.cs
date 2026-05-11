@@ -7,11 +7,10 @@ namespace PAEcuasSolver.Models.Results
         public double Lambda { get; set; }
         public double Omega { get; set; }
 
-        public double E0 { get; set; }
-        public double W { get; set; }
+        public string VoltageExpression { get; set; }
 
-        public double Amplitude { get; set; }
-        public double Phase { get; set; }
+        public double C1 { get; set; }
+        public double C2 { get; set; }
 
         public string Equation { get; set; }
 

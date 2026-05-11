@@ -14,44 +14,58 @@ namespace PAEcuasSolver.Services
 
         public Result Resolver(ProblemInput input)
         {
-            var argBuilder = ArgBuilderFactory.GetBuilder(input.Type);
-
-            string args = argBuilder.BuildArgs(input);
-
-            string script = GetScriptName(input.Type);
-
-            string rawOutput = matlabService.Execute(script, args);
-
-            var (humanText, json) = parser.Parse(rawOutput);
-
-
-            /** 
-             * 
-                                            USAR ESTO EN CASO DE BUG DE LO QUE SUELTA MATLAB:
-                                            Console.WriteLine("=== RAW OUTPUT ===");
-                                            Console.WriteLine(rawOutput);
-                                            Console.WriteLine("=== JSON EXTRAIDO ===");
-                                            Console.WriteLine(json);
-            **/
-
-
-            IResultData? data = null;
-
-            if (!string.IsNullOrWhiteSpace(json))
+            try
             {
+                var argBuilder = ArgBuilderFactory.GetBuilder(input.Type);
+                string args = argBuilder.BuildArgs(input);
+
+                string script = GetScriptName(input.Type);
+
+                Console.WriteLine("=== SOLVER DEBUG ===");
+                Console.WriteLine($"Script: {script}");
+                Console.WriteLine($"Args: {args}");
+
+                string rawOutput = matlabService.Execute(script, args);
+
+                Console.WriteLine("=== RAW OUTPUT ===");
+                Console.WriteLine(rawOutput);
+
+                var (humanText, json) = parser.Parse(rawOutput);
+
+                Console.WriteLine("=== HUMAN TEXT ===");
+                Console.WriteLine(humanText);
+
+                Console.WriteLine("=== JSON ===");
+                Console.WriteLine(json);
+
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    throw new Exception("MATLAB no devolvió JSON válido.");
+                }
+
                 using var doc = JsonDocument.Parse(json);
                 var root = doc.RootElement;
 
                 var mapper = ResultMapperFactory.GetMapper(input.Type);
+                var data = mapper.Map(root);
 
-                data = mapper.Map(root);
+                return new Result
+                {
+                    Message = humanText,
+                    Data = data
+                };
             }
-
-            return new Result
+            catch (Exception ex)
             {
-                Message = humanText,
-                Data = data
-            };
+                Console.WriteLine("🔥 ERROR EN SOLVER SERVICE:");
+                Console.WriteLine(ex.ToString());
+
+                return new Result
+                {
+                    Message = "Error interno al resolver el sistema. Revisa logs.",
+                    Data = null
+                };
+            }
         }
 
         private string GetScriptName(string type)

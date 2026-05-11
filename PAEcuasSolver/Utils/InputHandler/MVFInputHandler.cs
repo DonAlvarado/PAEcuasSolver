@@ -1,5 +1,4 @@
 ﻿using PAEcuasSolver.Models;
-using System;
 using System.Collections.Generic;
 
 namespace PAEcuasSolver.Utils.InputHandler
@@ -17,7 +16,7 @@ namespace PAEcuasSolver.Utils.InputHandler
             Console.WriteLine("=== Movimiento Vibratorio Forzado ===");
 
             input.Parameters["m"] = InputHelper.LeerDouble("Masa (m): ");
-            input.Parameters["k"] = InputHelper.LeerDouble("Constante (k): ");
+            input.Parameters["k"] = InputHelper.LeerDouble("Constante del resorte (k): ");
             input.Parameters["b"] = InputHelper.LeerDouble("Amortiguamiento (b): ");
 
             input.Parameters["F0"] = InputHelper.LeerDouble("Fuerza externa (F0): ");

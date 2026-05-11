@@ -13,5 +13,7 @@ namespace PAEcuasSolver.Models
         // Para condiciones iniciales
         public double InitialPosition { get; set; }
         public double InitialVelocity { get; set; }
+
+        public string FunctionExpression { get; set; }
     }
 }

@@ -1,35 +1,24 @@
-function result = rlc_q(L, R, C, E0, w, q0, dq0)
+function result = rlc_q(L, R, C, E, q0, i0)
 
-% ================= PARAMETROS =================
-lambda = R/(2*L);
-omega = sqrt(1/(L*C));
+% ================= TIEMPO =================
+t = linspace(0,10,200);
 
-F0 = E0 / L;
+% ================= MODELO =================
+a = L;
+b = R;
+c = 1/C;
 
-t = linspace(0, 10, 200);
+% ================= FORZAMIENTO =================
+if isnumeric(E)
+    f = @(t) E;
+else
+    f = @(t) eval(E);
+end
 
-% ================= RESPUESTA FORZADA =================
-A = F0 / sqrt((omega^2 - w^2)^2 + (2*lambda*w)^2);
-phi = atan2(2*lambda*w, (omega^2 - w^2));
+% ================= SOLVER =================
+result = ode2_core(a, b, c, f, t, q0, i0);
 
-q = A * cos(w*t - phi);
-
-% ================= RESULT =================
-result.lambda = lambda;
-result.omega = omega;
-
-result.E0 = E0;
-result.w = w;
-
-result.A = A;
-result.phi = phi;
-
-result.equation = sprintf("q(t) = %.4f*cos(%.4ft - %.4f)", A, w, phi);
-
-result.t = t;
-result.x = q;
-
-% ================= JSON =================
+% ================= JSON OUTPUT =================
 json = jsonencode(result);
 
 fprintf("JSON_START\n");

@@ -1,39 +1,23 @@
-function result = rlc_i(L, R, C, E0, w, i0, di0)
+function result = rlci(L, R, C, E, i0, di0)
 
-% PARAMETROS
-lambda = R/(2*L);
-omega = sqrt(1/(L*C));
+t = linspace(0,10,200);
 
-t = linspace(0, 10, 200);
+a = L;
+b = R;
+c = 1/C;
 
-% Fuerza equivalente (derivada de E)
-F0 = (E0 * w) / L;
+if isnumeric(E)
+    f = @(t) E;
+else
+    f = @(t) eval(E);
+end
 
-A = F0 / sqrt((omega^2 - w^2)^2 + (2*lambda*w)^2);
-phi = atan2(2*lambda*w, (omega^2 - w^2));
+result = ode2_core(a, b, c, f, t, i0, di0);
 
-i = A * cos(w*t - phi);
+end
 
-% RESULT
-result.lambda = lambda;
-result.omega = omega;
-
-result.E0 = E0;
-result.w = w;
-
-result.A = A;
-result.phi = phi;
-
-result.equation = sprintf("i(t) = %.4f*cos(%.4ft - %.4f)", A, w, phi);
-
-result.t = t;
-result.x = i;
-
-% JSON
 json = jsonencode(result);
 
 fprintf("JSON_START\n");
 fprintf("%s\n", json);
 fprintf("JSON_END\n");
-
-end

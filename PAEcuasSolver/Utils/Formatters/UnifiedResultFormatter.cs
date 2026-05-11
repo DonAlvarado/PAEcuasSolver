@@ -86,21 +86,30 @@ namespace PAEcuasSolver.Utils.Formatters
             return "Ecuación no disponible";
         }
 
-        private string FormatMVF(MVFResultData mvf)
+        public string FormatMVF(MVFResultData mvf)
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine("=== Movimiento Vibratorio Forzado ===\n");
+            sb.AppendLine("=== Movimiento Vibratorio Forzado ===");
+            sb.AppendLine();
 
-            sb.AppendLine($"lambda = {mvf.Lambda:F4}");
-            sb.AppendLine($"omega  = {mvf.Omega:F4}");
-            sb.AppendLine($"F0     = {mvf.F0:F4}");
-            sb.AppendLine($"wf     = {mvf.OmegaF:F4}\n");
+            sb.AppendLine($"λ   = {mvf.Lambda:F6}");
+            sb.AppendLine($"ω0  = {mvf.Omega0:F6}");
+            sb.AppendLine($"ωf  = {mvf.OmegaF:F6}");
+            sb.AppendLine($"F0  = {mvf.F0:F6}");
+            sb.AppendLine();
 
-            sb.AppendLine($"A   = {mvf.Amplitude:F4}");
-            sb.AppendLine($"phi = {mvf.Phase:F4}\n");
+            sb.AppendLine("Constantes:");
+            sb.AppendLine($"A   = {mvf.A:F6}");
+            sb.AppendLine($"B   = {mvf.B:F6}");
+            sb.AppendLine();
 
-            sb.AppendLine($"{mvf.Equation}");
+            sb.AppendLine($"C1  = {mvf.C1:F6}");
+            sb.AppendLine($"C2  = {mvf.C2:F6}");
+            sb.AppendLine();
+
+            sb.AppendLine("Ecuación:");
+            sb.AppendLine(mvf.Equation);
 
             return sb.ToString();
         }
@@ -114,13 +123,12 @@ namespace PAEcuasSolver.Utils.Formatters
 
             sb.AppendLine($"lambda = {rlc.Lambda:F4}");
             sb.AppendLine($"omega  = {rlc.Omega:F4}");
-            sb.AppendLine($"E0     = {rlc.E0:F4}");
-            sb.AppendLine($"w      = {rlc.W:F4}\n");
+            sb.AppendLine($"E(t)   = {rlc.VoltageExpression}\n");
 
-            sb.AppendLine($"A   = {rlc.Amplitude:F4}");
-            sb.AppendLine($"phi = {rlc.Phase:F4}\n");
+            sb.AppendLine($"C1 = {rlc.C1:F4}");
+            sb.AppendLine($"C2 = {rlc.C2:F4}\n");
 
-            sb.AppendLine($"{rlc.Equation}");
+            sb.AppendLine(rlc.Equation);
 
             return sb.ToString();
         }
@@ -134,13 +142,12 @@ namespace PAEcuasSolver.Utils.Formatters
 
             sb.AppendLine($"lambda = {rlc.Lambda:F4}");
             sb.AppendLine($"omega  = {rlc.Omega:F4}");
-            sb.AppendLine($"E0     = {rlc.E0:F4}");
-            sb.AppendLine($"w      = {rlc.W:F4}\n");
+            sb.AppendLine($"E(t)   = {rlc.VoltageExpression}\n");
 
-            sb.AppendLine($"A   = {rlc.Amplitude:F4}");
-            sb.AppendLine($"phi = {rlc.Phase:F4}\n");
+            sb.AppendLine($"C1 = {rlc.C1:F4}");
+            sb.AppendLine($"C2 = {rlc.C2:F4}\n");
 
-            sb.AppendLine($"{rlc.Equation}");
+            sb.AppendLine(rlc.Equation);
 
             return sb.ToString();
         }

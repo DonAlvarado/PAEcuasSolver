@@ -13,16 +13,22 @@ namespace PAEcuasSolver.Utils.Mappers
                 Lambda = root.GetProperty("lambda").GetDouble(),
                 Omega = root.GetProperty("omega").GetDouble(),
 
-                E0 = root.GetProperty("E0").GetDouble(),
-                W = root.GetProperty("w").GetDouble(),
+                VoltageExpression = root.GetProperty("voltage_expression").GetString(),
 
-                Amplitude = root.GetProperty("A").GetDouble(),
-                Phase = root.GetProperty("phi").GetDouble(),
+                C1 = root.GetProperty("C1").GetDouble(),
+                C2 = root.GetProperty("C2").GetDouble(),
 
                 Equation = root.GetProperty("equation").GetString(),
 
-                Time = root.GetProperty("t").EnumerateArray().Select(e => e.GetDouble()).ToList(),
-                Values = root.GetProperty("x").EnumerateArray().Select(e => e.GetDouble()).ToList()
+                Time = root.GetProperty("t")
+                    .EnumerateArray()
+                    .Select(e => e.GetDouble())
+                    .ToList(),
+
+                Values = root.GetProperty("x")
+                    .EnumerateArray()
+                    .Select(e => e.GetDouble())
+                    .ToList()
             };
         }
     }
